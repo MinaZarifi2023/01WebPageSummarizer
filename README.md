@@ -1,109 +1,90 @@
-# 🚀 WebPage Summarizer
+# WebPage Summarizer
 
-A simple but powerful tool that summarizes the content of any public webpage into clean, readable Markdown using both OpenAI's hosted LLMs and local models via Ollama.
+## Summary
 
---- 
-✅ Summary of the Code
-Project Goal: Build a web summarization tool that takes a URL and returns a clean, readable Markdown summary using either OpenAI API (gpt-4o-mini) or local LLM via Ollama (llama3.2).
+This project takes a URL and returns a Markdown summary using either OpenAI API (`gpt-4o-mini`) or a local model (`llama3.2`) through Ollama.
 
-🔧 Key Components
-Environment Check: Confirms that the right virtual environment (like llms or venv) is activated.
+## Components
 
-API Key Handling:
+- **Environment Check**: Verifies that the appropriate virtual environment (e.g. `llms`, `venv`) is active.
+- **API Key Handling**:
+  - Loads `.env` file from the project root.
+  - Checks that `OPENAI_API_KEY` exists and is correctly formatted.
+- **Website Class**: Downloads and parses the webpage using `requests` and `BeautifulSoup`. Strips out unnecessary tags (`script`, `style`, `img`, `input`) and extracts the main text.
+- **Model Interfaces**:
+  - **OpenAI**: Uses the `openai` Python SDK and `gpt-4o-mini`.
+  - **Ollama**: Sends a POST request to the local server at `http://localhost:11434/api/chat`.
+- **Prompt Handling**: Combines system and user prompts for summarization.
+- **Display**: Uses `IPython.display.Markdown` to show the output in a notebook.
 
-Loads .env from the project root.
+## Features
 
-Verifies the presence and format of OPENAI_API_KEY.
+- Accepts any public URL (e.g. articles, blog posts)
+- Supports both cloud-based and local language models
+- Extracts clean content from HTML
+- Returns summary in Markdown format
+- Displays results inside Jupyter Notebooks
 
-Website Class: Fetches and cleans up the page using requests + BeautifulSoup. Removes irrelevant tags (script, style, img, input) and extracts page text.
+## Requirements
 
-Model Interfaces:
+- Python 3.8 or higher
+- Jupyter Lab or Notebook
+- Active virtual environment (`llms`, `venv`, etc.)
+- `.env` file containing:
 
-OpenAI API: Uses openai Python SDK to generate summaries with gpt-4o-mini.
-
-Ollama: Sends a POST request to local LLM server via http://localhost:11434/api/chat.
-
-Prompt Handling:
-
-System and user prompts are combined for summarization.
-
-Display:
-
-Summary is rendered directly in the notebook using IPython.display.Markdown.
-
----
-
-## 🎯 Features
-
-- 🌐 Input: Any URL (e.g. Wikipedia article, blog post)
-- 🧠 LLMs:
-  - OpenAI's `gpt-4o-mini` via API
-  - Local `llama3.2` via [Ollama](https://ollama.com)
-- 🧼 Clean HTML parsing using BeautifulSoup (removes noise like images/scripts)
-- 🪄 Output: Concise Markdown summary
-- ✅ Notebook-integrated display via `IPython.display.Markdown`
-
----
-
-## 📦 Requirements
-
-- Python 3.8+
-- Jupyter Lab / Notebook
-- Virtual environment activated (`llms` or `venv`)
-- [.env](https://github.com/motdotla/dotenv) file containing:
-  ```env
-  OPENAI_API_KEY=sk-proj-...
-
+```env
+OPENAI_API_KEY=sk-proj-...
 ```
 
-## 🛠 Setup Instructions
+## Setup
 
-### 📥 Clone Repo
+1. Clone the repository:
 ```bash
 git clone https://github.com/yourusername/webpage-summarizer.git
 cd webpage-summarizer
 ```
 
-### 🐍 Create and Activate Virtual Environment
+2. Create and activate a virtual environment:
 ```bash
-conda create -n llms python=3.10
+python -m venv venv
+source venv/bin/activate
 conda activate llms
 ```
 
-### 📦 Install Dependencies
+3. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-### 🔑 Set OpenAI API Key
-Create a `.env` file in the **parent folder** of your notebook and add the following line:
+4. Add your OpenAI API key:  
+Create a `.env` file in the parent directory of your notebook:
 ```env
+conda env create -f environment.yml
 OPENAI_API_KEY=sk-proj-xxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
-### ⚙️ Start Ollama (for local model)
+5. Start Ollama (for local models):
 ```bash
-ollama run llama3
+ollama run llama3.2
 ```
 
-### 🚀 Run Jupyter Lab
+6. Run Jupyter Lab:
 ```bash
 jupyter lab
 ```
 
----
+## Example
 
-## 🧪 Example
 ```python
 display_summary("https://en.wikipedia.org/wiki/OpenAI")
 ```
-You’ll get a structured, clean Markdown summary of the given webpage.
 
----
+This will generate a Markdown summary of the provided URL.
 
-## 🤖 Switching Between OpenAI and Ollama
+## Switching Between OpenAI and Ollama
 
-### Using OpenAI:
+### Using OpenAI
+
 ```python
 response = openai.chat.completions.create(
     model="gpt-4o",
@@ -114,7 +95,8 @@ response = openai.chat.completions.create(
 )
 ```
 
-### Using Local Ollama Model:
+### Using Ollama
+
 ```python
 response = requests.post(
     "http://localhost:11434/api/chat",
