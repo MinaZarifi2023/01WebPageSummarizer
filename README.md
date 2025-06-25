@@ -1,5 +1,3 @@
-# 01WebPageSummarizer
-
 # 🚀 WebPage Summarizer
 
 A simple but powerful tool that summarizes the content of any public webpage into clean, readable Markdown using both OpenAI's hosted LLMs and local models via Ollama.
